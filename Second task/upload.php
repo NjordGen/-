@@ -11,4 +11,3 @@ file_put_contents("C:\Users\User\Documents\GitHub\Tasks\upload\aaa.txt", "При
 file_put_contents("C:\Users\User\Documents\GitHub\Tasks\upload\bbb.log", "Теcт");
 file_put_contents("C:\Users\User\Documents\GitHub\Tasks\upload\ccc.html", "<h1>Заголовок</h1>");
 ?>
- 
