@@ -1,0 +1,144 @@
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `athletes`
+--
+
+DROP TABLE IF EXISTS `athletes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `athletes` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `fio` varchar(100) NOT NULL,
+  `email` varchar(130) NOT NULL,
+  `phone` varchar(15) NOT NULL,
+  `dob` date NOT NULL,
+  `age` int NOT NULL,
+  `passport` int NOT NULL,
+  `avg_competition_place` int DEFAULT NULL,
+  `bio` text,
+  `video` longblob,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `athletes_id_uindex` (`id`),
+  UNIQUE KEY `athletes_passport_uindex` (`passport`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `athletes`
+--
+
+LOCK TABLES `athletes` WRITE;
+/*!40000 ALTER TABLE `athletes` DISABLE KEYS */;
+INSERT INTO `athletes` (`id`, `fio`, `email`, `phone`, `dob`, `age`, `passport`, `avg_competition_place`, `bio`, `video`, `created_at`) VALUES (1,'Ivan Ivanovich Ivanov','asdad@gmail.com','9135235434','1990-04-20',32,35235234,3,'bla bla bla',NULL,'2023-01-17 16:58:41'),(2,'Semen Semenovich Semenov','gasdg@gmail.com','9135236623','1991-06-21',31,35235523,2,'bla bla bla 2',NULL,'2023-01-17 17:00:07'),(3,'ESrwkn werwer ERwer','gasd@gmail.com','9135356623','1993-06-22',30,35235555,1,'bla bla bla 1',NULL,'2023-01-17 17:00:39'),(4,'Pa pa pa','asd234@gmail.com','9135352223','1993-06-10',30,35235445,2,'bla bla bla 4',NULL,'2023-01-17 17:01:09');
+/*!40000 ALTER TABLE `athletes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `competitions`
+--
+
+DROP TABLE IF EXISTS `competitions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `competitions` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `date` datetime NOT NULL,
+  `country` varchar(30) NOT NULL,
+  `city` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `competitions_id_uindex` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `competitions`
+--
+
+LOCK TABLES `competitions` WRITE;
+/*!40000 ALTER TABLE `competitions` DISABLE KEYS */;
+INSERT INTO `competitions` (`id`, `name`, `date`, `country`, `city`) VALUES (1,'Marathon 1','2000-01-05 02:09:00','Russia','Surgut'),(2,'Marathon 2','2002-01-05 10:00:00','Russia','Samara'),(3,'Marathon 3','2022-06-28 11:00:00','Russia','Perm');
+/*!40000 ALTER TABLE `competitions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `results`
+--
+
+DROP TABLE IF EXISTS `results`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `results` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `athlete_id` int NOT NULL,
+  `competition_id` int NOT NULL,
+  `finished_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `results_id_uindex` (`id`),
+  KEY `table_name_athletes_id_fk` (`athlete_id`),
+  KEY `table_name_competitions_id_fk` (`competition_id`),
+  CONSTRAINT `table_name_athletes_id_fk` FOREIGN KEY (`athlete_id`) REFERENCES `athletes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `table_name_competitions_id_fk` FOREIGN KEY (`competition_id`) REFERENCES `competitions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `results`
+--
+
+LOCK TABLES `results` WRITE;
+/*!40000 ALTER TABLE `results` DISABLE KEYS */;
+INSERT INTO `results` (`id`, `athlete_id`, `competition_id`, `finished_at`) VALUES (1,1,2,'2023-01-17 11:03:46'),(2,2,2,'2023-01-17 11:10:00'),(3,3,2,'2023-01-17 12:00:11'),(7,1,1,'2020-01-17 11:06:06'),(8,1,3,'2021-01-17 11:06:15'),(9,2,1,'2020-01-17 11:06:35');
+/*!40000 ALTER TABLE `results` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `winners_list`
+--
+
+DROP TABLE IF EXISTS `winners_list`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `winners_list` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `competition_id` int NOT NULL,
+  `athlete_id` int NOT NULL,
+  `place` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `winners_list_id_uindex` (`id`),
+  KEY `winners_list_athletes_id_fk` (`athlete_id`),
+  KEY `winners_list_competitions_id_fk` (`competition_id`),
+  CONSTRAINT `winners_list_athletes_id_fk` FOREIGN KEY (`athlete_id`) REFERENCES `athletes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `winners_list_competitions_id_fk` FOREIGN KEY (`competition_id`) REFERENCES `competitions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `winners_list`
+--
+
+LOCK TABLES `winners_list` WRITE;
+/*!40000 ALTER TABLE `winners_list` DISABLE KEYS */;
+INSERT INTO `winners_list` (`id`, `competition_id`, `athlete_id`, `place`) VALUES (1,2,1,1),(2,2,2,2),(3,2,3,3),(4,1,1,1),(5,1,2,2),(6,3,1,1);
+/*!40000 ALTER TABLE `winners_list` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

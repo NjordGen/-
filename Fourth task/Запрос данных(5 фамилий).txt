@@ -1,0 +1,6 @@
+SELECT a.fio, COUNT(competition_id) as participation
+FROM results r
+         INNER JOIN athletes a on r.athlete_id = a.id
+GROUP BY r.athlete_id
+ORDER BY participation DESC
+LIMIT 5;

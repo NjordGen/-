@@ -1,0 +1,98 @@
+--Я пользовался OpenServer и Php My Admin
+create table athletes
+(
+    id int not null,
+    fio varchar(100) not null,
+    email varchar(130) not null,
+    phone varchar(15) not null,
+    dob DATE not null,
+    age int not null,
+    passport int not null,
+    avg_competition_place int null,
+    bio TEXT null,
+    video LONGBLOB null,
+    created_at timestamp default CURRENT_TIMESTAMP not null
+);
+
+create unique index athletes_id_uindex
+  on athletes (id);
+
+create unique index athletes_passport_uindex
+  on athletes (passport);
+
+alter table athletes
+  add constraint athletes_pk
+    primary key (id);
+
+alter table athletes modify id int auto_increment;
+
+
+
+
+create table competitions
+(
+  id int,
+  name varchar(100) not null,
+  date datetime not null,
+  country varchar(30) not null,
+  city varchar(30) not null
+);
+
+create unique index competitions_id_uindex
+  on competitions (id);
+
+alter table competitions
+  add constraint competitions_pk
+    primary key (id);
+
+alter table competitions modify id int auto_increment;
+
+
+
+create table results
+(
+  id int,
+  athlete_id int not null,
+  competition_id int not null,
+  finished_at datetime not null,
+  constraint table_name_athletes_id_fk
+    foreign key (athlete_id) references athletes (id)
+      on update cascade on delete cascade,
+  constraint table_name_competitions_id_fk
+    foreign key (competition_id) references competitions (id)
+      on update cascade on delete cascade
+);
+
+create unique index results_id_uindex
+  on results (id);
+
+alter table results
+  add constraint results_pk
+    primary key (id);
+
+alter table results modify id int auto_increment;
+
+
+
+create table winners_list
+(
+  id int,
+  competition_id int not null,
+  athlete_id int not null,
+  place int not null,
+  constraint winners_list_athletes_id_fk
+    foreign key (athlete_id) references athletes (id)
+      on update cascade on delete cascade,
+  constraint winners_list_competitions_id_fk
+    foreign key (competition_id) references competitions (id)
+      on update cascade on delete cascade
+);
+
+create unique index winners_list_id_uindex
+  on winners_list (id);
+
+alter table winners_list
+  add constraint winners_list_pk
+    primary key (id);
+
+alter table winners_list modify id int auto_increment;
